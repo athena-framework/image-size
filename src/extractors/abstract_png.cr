@@ -1,4 +1,6 @@
-abstract struct Athena::ImageSize::Extractors::AbstractPNG < Athena::ImageSize::Extractor
+require "./extractor"
+
+abstract struct Athena::ImageSize::Extractors::AbstractPNG < Athena::ImageSize::Extractors::Extractor
   private SIGNATURE = Bytes[0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, read_only: true]
 
   # Based on https://github.com/php/php-src/blob/95da6e807a948039d3a42defbd849c4fed6cbe35/ext/standard/image.c#L299.
@@ -11,7 +13,7 @@ abstract struct Athena::ImageSize::Extractors::AbstractPNG < Athena::ImageSize::
 
     io.skip 8 # Skip rest of chunk data, and CRC
 
-    format = AIS::Image::Format::PNG
+    format = Image::Format::PNG
 
     # Determine if the PNG is an actual PNG or an APNG
     loop do
@@ -20,14 +22,14 @@ abstract struct Athena::ImageSize::Extractors::AbstractPNG < Athena::ImageSize::
 
       break if chunk_type.in? "IDAT", "IEND", nil
       if "acTL" == chunk_type
-        format = AIS::Image::Format::APNG
+        format = Image::Format::APNG
         break
       end
 
       io.skip data_chunk_length + 4 # Skips data and CRC chunk
     end
 
-    AIS::Image.new width, height, bits, format
+    Image.new width, height, bits, format
   end
 
   def self.matches?(io : IO, bytes : Bytes) : Bool

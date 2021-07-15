@@ -1,4 +1,6 @@
-struct Athena::ImageSize::Extractors::BMP < Athena::ImageSize::Extractor
+require "./extractor"
+
+struct Athena::ImageSize::Extractors::BMP < Athena::ImageSize::Extractors::Extractor
   private SIGNATURE = Bytes['B'.ord, 'M'.ord, read_only: true]
 
   # Based on https://github.com/php/php-src/blob/95da6e807a948039d3a42defbd849c4fed6cbe35/ext/standard/image.c#L100.
@@ -25,7 +27,7 @@ struct Athena::ImageSize::Extractors::BMP < Athena::ImageSize::Extractor
       raise "Unsupported BMP file format"
     end
 
-    AIS::Image.new width, height, bits, :bmp, 0
+    Image.new width, height, bits, :bmp, 0
   end
 
   def self.matches?(io : IO, bytes : Bytes) : Bool

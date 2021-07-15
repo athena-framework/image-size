@@ -8,7 +8,7 @@ record Athena::ImageSize::Image, width : UInt32, height : UInt32, bits : UInt32,
   end
 
   def self.from_io(io : ::IO) : self
-    extractor = AIS::Extractor.from_io io
+    extractor = AIS::Extractors::Extractor.from_io io
     image = extractor.extract io
     io.close
     image

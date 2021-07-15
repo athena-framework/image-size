@@ -1,5 +1,4 @@
 require "./image_format"
-require "./extractor"
 require "./extractors/*"
 require "./image"
 
