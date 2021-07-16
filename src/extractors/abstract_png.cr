@@ -5,7 +5,9 @@ abstract struct Athena::ImageSize::Extractors::AbstractPNG < Athena::ImageSize::
 
   # Based on https://github.com/php/php-src/blob/95da6e807a948039d3a42defbd849c4fed6cbe35/ext/standard/image.c#L299.
   def self.extract(io : IO) : AIS::Image
-    io.skip 8 # Skip data length and type
+    io.skip 4 # Skip data length and type
+
+    raise IO::Error.new "Missing IHDR chunk for PNG." if "IHDR" != io.read_string(4)
 
     width = io.read_bytes UInt32, IO::ByteFormat::BigEndian
     height = io.read_bytes UInt32, IO::ByteFormat::BigEndian

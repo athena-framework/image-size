@@ -18,6 +18,13 @@ abstract struct Athena::ImageSize::Extractors::Extractor
     return CUR if CUR.matches? io, bytes
     return PSD if PSD.matches? io, bytes
 
+    # Read in an additionl type to determine the format.
+    bytes = Bytes.new 8
+    io.pos -= 4
+    io.read_fully bytes
+
+    return MNG if MNG.matches? io, bytes
+
     raise "Could not determine extractor from provided bytes."
   end
 end

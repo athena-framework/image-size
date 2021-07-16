@@ -6,6 +6,7 @@ enum Athena::ImageSize::Image::Format
   CUR
   GIF
   ICO
+  MNG
   PNG
   PSD
 end
