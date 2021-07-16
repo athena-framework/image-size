@@ -7,4 +7,5 @@ enum Athena::ImageSize::Image::Format
   GIF
   ICO
   PNG
+  PSD
 end

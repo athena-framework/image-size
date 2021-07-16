@@ -16,6 +16,7 @@ abstract struct Athena::ImageSize::Extractors::Extractor
 
     return ICO if ICO.matches? io, bytes
     return CUR if CUR.matches? io, bytes
+    return PSD if PSD.matches? io, bytes
 
     raise "Could not determine extractor from provided bytes."
   end
