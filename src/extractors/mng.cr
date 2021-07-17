@@ -1,4 +1,3 @@
-# See http://www.libpng.org/pub/mng/spec/#mng-MHDR.
 struct Athena::ImageSize::Extractors::MNG < Athena::ImageSize::Extractors::Extractor
   private SIGNATURE = Bytes[0x8a, 0x4d, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, read_only: true]
 

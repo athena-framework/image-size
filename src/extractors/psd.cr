@@ -1,4 +1,3 @@
-# See https://docs.fileformat.com/image/psd/#file-header.
 struct Athena::ImageSize::Extractors::PSD < Athena::ImageSize::Extractors::Extractor
   private SIGNATURE = Bytes['8'.ord, 'B'.ord, 'P'.ord, 'S'.ord, read_only: true]
 
