@@ -11,4 +11,5 @@ enum Athena::ImageSize::Image::Format
   PNG
   PSD
   SWF
+  TIFF
 end

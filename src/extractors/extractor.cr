@@ -15,6 +15,8 @@ abstract struct Athena::ImageSize::Extractors::Extractor
     io.pos -= 3
     io.read_fully bytes
 
+    return MMTIFF if MMTIFF.matches? io, bytes
+    return IITIFF if IITIFF.matches? io, bytes
     return ICO if ICO.matches? io, bytes
     return CUR if CUR.matches? io, bytes
     return PSD if PSD.matches? io, bytes
