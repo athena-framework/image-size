@@ -1,7 +1,7 @@
 struct Athena::ImageSize::Extractors::MNG < Athena::ImageSize::Extractors::Extractor
   private SIGNATURE = Bytes[0x8a, 0x4d, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, read_only: true]
 
-  def self.extract(io : IO) : AIS::Image
+  def self.extract(io : IO) : AIS::Image?
     io.skip 4 # Skip the version string
 
     raise IO::Error.new "Missing MHDR chunk for MNG." if "MHDR" != io.read_string(4)

@@ -1,7 +1,7 @@
 struct Athena::ImageSize::Extractors::PSD < Athena::ImageSize::Extractors::Extractor
   private SIGNATURE = Bytes['8'.ord, 'B'.ord, 'P'.ord, 'S'.ord, read_only: true]
 
-  def self.extract(io : IO) : AIS::Image
+  def self.extract(io : IO) : AIS::Image?
     io.skip 8 # Skip version and reversed section
 
     channels = io.read_bytes UInt16, IO::ByteFormat::BigEndian

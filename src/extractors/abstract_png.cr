@@ -4,10 +4,10 @@ abstract struct Athena::ImageSize::Extractors::AbstractPNG < Athena::ImageSize::
   private SIGNATURE = Bytes[0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, read_only: true]
 
   # Based on https://github.com/php/php-src/blob/95da6e807a948039d3a42defbd849c4fed6cbe35/ext/standard/image.c#L299.
-  def self.extract(io : IO) : AIS::Image
+  def self.extract(io : IO) : AIS::Image?
     io.skip 4 # Skip data length and type
 
-    raise IO::Error.new "Missing IHDR chunk for PNG." if "IHDR" != io.read_string(4)
+    raise Exceptions::FormatError.new "Missing IHDR chunk for PNG." if "IHDR" != io.read_string(4)
 
     width = io.read_bytes UInt32, IO::ByteFormat::BigEndian
     height = io.read_bytes UInt32, IO::ByteFormat::BigEndian

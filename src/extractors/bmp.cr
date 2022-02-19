@@ -4,7 +4,7 @@ struct Athena::ImageSize::Extractors::BMP < Athena::ImageSize::Extractors::Extra
   private SIGNATURE = Bytes['B'.ord, 'M'.ord, read_only: true]
 
   # Based on https://github.com/php/php-src/blob/95da6e807a948039d3a42defbd849c4fed6cbe35/ext/standard/image.c#L100.
-  def self.extract(io : IO) : AIS::Image
+  def self.extract(io : IO) : AIS::Image?
     io.skip 11 # Skip rest of Header chunk
 
     info_header_length = io.read_bytes UInt32
