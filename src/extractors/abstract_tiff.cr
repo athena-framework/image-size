@@ -1,7 +1,9 @@
 abstract struct Athena::ImageSize::Extractors::AbstractTIFF < Athena::ImageSize::Extractors::Extractor
   private enum Tag
-    ImageWidth  = 0x0100
-    ImageLength = 0x0101
+    ImageWidth      = 0x0100
+    ImageLength     = 0x0101
+    BitsPerSample   = 0x0102
+    SamplesPerPixel = 0x0115
   end
 
   private enum DataType
@@ -26,15 +28,18 @@ abstract struct Athena::ImageSize::Extractors::AbstractTIFF < Athena::ImageSize:
     num_dirent = io.read_bytes UInt16, self.byte_format
     num_dirent = (io.pos + 2) + (num_dirent * 12)
 
-    width = height = nil
-    until width && height
+    width = height = bits = channels = nil
+    until width && height && bits && channels
       raise "Reached end of directory entries in TIFF" if io.pos > num_dirent
 
       ifd = Bytes.new 12
       io.read_fully ifd
       ifd = IO::Memory.new ifd, false
 
-      tag = Tag.new ifd.read_bytes UInt16, self.byte_format
+      unless tag = Tag.from_value? ifd.read_bytes UInt16, self.byte_format
+        next
+      end
+
       data_type = DataType.new ifd.read_bytes UInt16, self.byte_format
 
       ifd.skip 4
@@ -50,11 +55,13 @@ abstract struct Athena::ImageSize::Extractors::AbstractTIFF < Athena::ImageSize:
                     end
 
       case tag
-      in .image_width?  then width = entry_value
-      in .image_length? then height = entry_value
+      in .image_width?       then width = entry_value
+      in .image_length?      then height = entry_value
+      in .bits_per_sample?   then bits = entry_value
+      in .samples_per_pixel? then channels = entry_value
       end
     end
 
-    Image.new width, height, 0, format: :tiff
+    Image.new width, height, bits, :tiff, channels
   end
 end
