@@ -8,6 +8,7 @@ abstract struct Athena::ImageSize::Extractors::Extractor
     return GIF if GIF.matches? io, bytes
     return BMP if BMP.matches? io, bytes
     return APNG if APNG.matches? io, bytes
+    return SWF if SWF.matches? io, bytes
 
     # Read in an additionl type to determine the format.
     bytes = Bytes.new 4
