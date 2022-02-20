@@ -23,15 +23,17 @@ struct Athena::ImageSize::Image
   end
 
   def self.from_io(io : IO) : self
-    self.from_io?(io) || raise "Failed to parse image."
+    if extractor_type = AIS::Extractors::Extractor.from_io io
+      return extractor_type.extract(io) || raise "Failed to parse image."
+    end
+
+    raise "Unsupported image format."
   end
 
   def self.from_io?(io : IO) : self?
     if extractor_type = AIS::Extractors::Extractor.from_io io
       return extractor_type.extract io
     end
-
-    raise "Unsupported image format."
   ensure
     io.close
   end
