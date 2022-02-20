@@ -8,6 +8,7 @@ struct ImageTest < ASPEC::TestCase
 
       filename = File.basename file_path
 
+      # width, height, bits, channels, format
       /(\d+)x(\d+)_(\d+)_(\d+)\.(\w+)$/.match(filename)
 
       _, expected_width, expected_height, expected_bits, expected_chanels, expected_format = $~
@@ -38,6 +39,6 @@ struct ImageTest < ASPEC::TestCase
   end
 
   def files : Array
-    Dir.glob("#{__DIR__}/images/**/*.bmp").map { |name| {name} }
+    Dir.glob("#{__DIR__}/images/*/*").map { |name| {name} }
   end
 end

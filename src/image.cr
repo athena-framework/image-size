@@ -17,8 +17,6 @@ record Athena::ImageSize::Image, width : Int32, height : Int32, bits : Int32, fo
 
   def self.from_io?(io : IO) : self?
     AIS::Extractors::Extractor.from_io(io).extract io
-  rescue
-    nil
   ensure
     io.close
   end

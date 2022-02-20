@@ -10,6 +10,7 @@ enum Athena::ImageSize::Image::Format
   MNG
   PNG
   PSD
+  SVG
   SWF
   TIFF
 end

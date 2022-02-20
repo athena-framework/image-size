@@ -27,6 +27,18 @@ abstract struct Athena::ImageSize::Extractors::Extractor
     io.read_fully bytes
 
     return MNG if MNG.matches? io, bytes
+
+    # Read in an additionl type to determine the format.
+    # These are text based formats so will need to instantiate a string for the logic to work.
+    # Being sure to rewind the IO.
+    bytes = Bytes.new 4096
+    io.pos -= 8
+    io.read_fully? bytes
+
+    io.rewind
+
+    return SVG if SVG.matches? io, bytes
+
     raise "Could not determine extractor from provided bytes."
   end
 end
