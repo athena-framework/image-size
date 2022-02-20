@@ -56,7 +56,7 @@ struct Athena::ImageSize::Extractors::JPEG < Athena::ImageSize::Extractors::Extr
           width = io.read_bytes UInt16, IO::ByteFormat::BigEndian
           channels = io.read_byte.not_nil!
 
-          return Image.new width, height, bits, :jpeg, channels
+          return Image.new width, height, :jpeg, bits, channels
         elsif !self.skip_variable(io)
           return image.unsafe_as(Image)
         end
@@ -92,10 +92,6 @@ struct Athena::ImageSize::Extractors::JPEG < Athena::ImageSize::Extractors::Extr
         return Block::M_EOI if marker.nil?
         extraneous += 1
       end
-
-      {% unless flag? "release" %}
-        puts "Warning: Corrupt JPEG data: #{extraneous} extraneous bytes before marker" if extraneous > 1
-      {% end %}
     end
 
     a = 1

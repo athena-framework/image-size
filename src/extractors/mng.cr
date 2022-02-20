@@ -4,12 +4,12 @@ struct Athena::ImageSize::Extractors::MNG < Athena::ImageSize::Extractors::Extra
   def self.extract(io : IO) : AIS::Image?
     io.skip 4 # Skip the version string
 
-    raise IO::Error.new "Missing MHDR chunk for MNG." if "MHDR" != io.read_string(4)
+    return if "MHDR" != io.read_string(4)
 
     width = io.read_bytes UInt32, IO::ByteFormat::BigEndian
     height = io.read_bytes UInt32, IO::ByteFormat::BigEndian
 
-    Image.new width, height, 0, :mng
+    Image.new width, height, :mng
   end
 
   def self.matches?(io : IO, bytes : Bytes) : Bool

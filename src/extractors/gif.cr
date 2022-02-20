@@ -13,7 +13,7 @@ struct Athena::ImageSize::Extractors::GIF < Athena::ImageSize::Extractors::Extra
     # Not 100% sure what this is doing, probably parsing something from the packed field.
     bits = !(packed_bit & 0x80).zero? ? ((packed_bit & 0x07) + 1) : 0
 
-    Image.new width, height, bits, :gif, 3
+    Image.new width, height, :gif, bits, 3
   end
 
   def self.matches?(io : IO, bytes : Bytes) : Bool

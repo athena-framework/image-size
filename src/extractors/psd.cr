@@ -9,7 +9,7 @@ struct Athena::ImageSize::Extractors::PSD < Athena::ImageSize::Extractors::Extra
     width = io.read_bytes UInt32, IO::ByteFormat::BigEndian
     bits = io.read_bytes UInt16, IO::ByteFormat::BigEndian
 
-    Image.new width, height, bits, :psd, channels
+    Image.new width, height, :psd, bits, channels
   end
 
   def self.matches?(io : IO, bytes : Bytes) : Bool

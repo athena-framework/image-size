@@ -7,7 +7,7 @@ abstract struct Athena::ImageSize::Extractors::AbstractPNG < Athena::ImageSize::
   def self.extract(io : IO) : AIS::Image?
     io.skip 4 # Skip data length and type
 
-    raise Exceptions::FormatError.new "Missing IHDR chunk for PNG." if "IHDR" != io.read_string(4)
+    return if "IHDR" != io.read_string(4)
 
     width = io.read_bytes UInt32, IO::ByteFormat::BigEndian
     height = io.read_bytes UInt32, IO::ByteFormat::BigEndian
@@ -31,7 +31,7 @@ abstract struct Athena::ImageSize::Extractors::AbstractPNG < Athena::ImageSize::
       io.skip data_chunk_length + 4 # Skips data and CRC chunk
     end
 
-    Image.new width, height, bits, format
+    Image.new width, height, format, bits
   end
 
   def self.matches?(io : IO, bytes : Bytes) : Bool
@@ -41,8 +41,6 @@ abstract struct Athena::ImageSize::Extractors::AbstractPNG < Athena::ImageSize::
     io.pos -= 3
     io.read_fully eight_bytes
 
-    return true if eight_bytes == SIGNATURE
-
-    raise "PNG file corrupted by ASCII conversion"
+    eight_bytes == SIGNATURE
   end
 end

@@ -1,5 +1,6 @@
+# :nodoc:
 abstract struct Athena::ImageSize::Extractors::Extractor
-  def self.from_io(io : IO) : self.class
+  def self.from_io(io : IO)
     bytes = Bytes.new 3
     io.read_fully bytes
 
@@ -46,6 +47,6 @@ abstract struct Athena::ImageSize::Extractors::Extractor
 
     return SVG if SVG.matches? io, bytes
 
-    raise "Could not determine extractor from provided bytes."
+    nil
   end
 end

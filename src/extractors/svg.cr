@@ -26,7 +26,7 @@ struct Athena::ImageSize::Extractors::SVG < Athena::ImageSize::Extractors::Extra
       height = self.parse_length h
     end
 
-    Image.new width.not_nil!, height.not_nil!, 0, format: :svg
+    Image.new width.not_nil!, height.not_nil!, :svg
   end
 
   def self.matches?(io : IO, bytes : Bytes) : Bool

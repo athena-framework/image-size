@@ -11,7 +11,7 @@ struct Athena::ImageSize::Extractors::SWF < Athena::ImageSize::Extractors::Extra
     width = (self.get_bits(buffer, 5 + 15, 15) - self.get_bits(buffer, 5, bits)) // 20
     height = (self.get_bits(buffer, 5 + (3 * bits), bits) - self.get_bits(buffer, 5 + (2 * bits), bits)) // 20
 
-    Image.new width, height, 0, format: :swf
+    Image.new width, height, :swf
   end
 
   def self.matches?(io : IO, bytes : Bytes) : Bool

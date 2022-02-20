@@ -11,12 +11,15 @@ struct ImageTest < ASPEC::TestCase
       # width, height, bits, channels, format
       /(\d+)x(\d+)_(\d+)_(\d+)\.(\w+)$/.match(filename)
 
-      _, expected_width, expected_height, expected_bits, expected_chanels, expected_format = $~
+      _, expected_width, expected_height, expected_bits, expected_channels, expected_format = $~
+
+      expected_bits = "0" == expected_bits ? nil : expected_bits.to_i
+      expected_channels = "0" == expected_channels ? nil : expected_channels.to_i
 
       image.width.should eq expected_width.to_i
       image.height.should eq expected_height.to_i
-      image.bits.should eq expected_bits.to_i
-      image.channels.should eq expected_chanels.to_i
+      image.bits.should eq expected_bits
+      image.channels.should eq expected_channels
       image.format.should eq AIS::Image::Format.parse(expected_format)
     end
   end
@@ -27,18 +30,24 @@ struct ImageTest < ASPEC::TestCase
 
     filename = File.basename file_path
 
+    # width, height, bits, channels, format
     /(\d+)x(\d+)_(\d+)_(\d+)\.(\w+)$/.match(filename)
 
-    _, expected_width, expected_height, expected_bits, expected_chanels, expected_format = $~
+    _, expected_width, expected_height, expected_bits, expected_channels, expected_format = $~
+
+    expected_bits = "0" == expected_bits ? nil : expected_bits.to_i
+    expected_channels = "0" == expected_channels ? nil : expected_channels.to_i
 
     image.width.should eq expected_width.to_i
     image.height.should eq expected_height.to_i
-    image.bits.should eq expected_bits.to_i
-    image.channels.should eq expected_chanels.to_i
+    image.bits.should eq expected_bits
+    image.channels.should eq expected_channels
     image.format.should eq AIS::Image::Format.parse(expected_format)
   end
 
-  def files : Array
-    Dir.glob("#{__DIR__}/images/*/*").map { |name| {name} }
+  def files : Hash
+    Dir.glob("#{__DIR__}/images/*/*").each_with_object(Hash(String, Tuple(String)).new) do |name, hash|
+      hash[name] = {name}
+    end
   end
 end

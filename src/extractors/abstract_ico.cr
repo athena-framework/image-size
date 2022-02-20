@@ -28,6 +28,6 @@ abstract struct Athena::ImageSize::Extractors::AbstractICO < Athena::ImageSize::
       end
     end
 
-    Image.new width.zero? ? 256 : width, height.zero? ? 256 : height, bits, self.format
+    Image.new width.zero? ? 256 : width, height.zero? ? 256 : height, self.format, bits
   end
 end

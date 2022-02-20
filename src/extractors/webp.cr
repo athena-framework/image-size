@@ -36,7 +36,7 @@ struct Athena::ImageSize::Extractors::WebP < Athena::ImageSize::Extractors::Extr
                       }
                     end
 
-    Image.new width, height, 8, :webp
+    Image.new width, height, :webp, 8
   end
 
   def self.matches?(io : IO, bytes : Bytes) : Bool

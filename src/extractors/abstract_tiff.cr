@@ -30,7 +30,7 @@ abstract struct Athena::ImageSize::Extractors::AbstractTIFF < Athena::ImageSize:
 
     width = height = bits = channels = nil
     until width && height && bits && channels
-      raise "Reached end of directory entries in TIFF" if io.pos > num_dirent
+      return if io.pos > num_dirent
 
       ifd = Bytes.new 12
       io.read_fully ifd
@@ -62,6 +62,6 @@ abstract struct Athena::ImageSize::Extractors::AbstractTIFF < Athena::ImageSize:
       end
     end
 
-    Image.new width, height, bits, :tiff, channels
+    Image.new width, height, :tiff, bits, channels
   end
 end

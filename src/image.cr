@@ -1,10 +1,21 @@
-record Athena::ImageSize::Image, width : Int32, height : Int32, bits : Int32, format : AIS::Image::Format, channels : Int32 = 0 do
-  def self.new(width : Int, height : Int, bits : Int, format : AIS::Image::Format, channels : Int = 0) : self
-    new width.to_i, height.to_i, bits.to_i, format, channels.to_i
+# Represents information related to a parsed image.
+# Includes its dimensions as well as its number of bits, and channels if applicable.
+struct Athena::ImageSize::Image
+  getter width : Int32
+  getter height : Int32
+  getter bits : Int32?
+  getter channels : Int32?
+  getter format : Athena::ImageSize::Image::Format
+
+  def initialize(width : Int, height : Int, @format : AIS::Image::Format, bits : Int? = nil, channels : Int? = nil)
+    @width = width.to_i
+    @height = height.to_i
+    @bits = bits.try &.to_i
+    @channels = channels.try &.to_i
   end
 
   def self.from_file_path(path : String | Path) : self
-    self.from_io?(File.open(path)) || raise "Failed to parse"
+    self.from_io File.open path
   end
 
   def self.from_file_path?(path : String | Path) : self?
@@ -12,11 +23,15 @@ record Athena::ImageSize::Image, width : Int32, height : Int32, bits : Int32, fo
   end
 
   def self.from_io(io : IO) : self
-    self.from_io?(io) || raise "Failed to parse"
+    self.from_io?(io) || raise "Failed to parse image."
   end
 
   def self.from_io?(io : IO) : self?
-    AIS::Extractors::Extractor.from_io(io).extract io
+    if extractor_type = AIS::Extractors::Extractor.from_io io
+      return extractor_type.extract io
+    end
+
+    raise "Unsupported image format."
   ensure
     io.close
   end

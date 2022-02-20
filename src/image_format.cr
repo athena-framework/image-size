@@ -1,5 +1,6 @@
 struct Athena::ImageSize::Image; end
 
+# Enumerates the supported image formats.
 enum Athena::ImageSize::Image::Format
   APNG
   BMP
