@@ -13,4 +13,5 @@ enum Athena::ImageSize::Image::Format
   SVG
   SWF
   TIFF
+  WEBP
 end

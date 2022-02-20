@@ -10,7 +10,7 @@ abstract struct Athena::ImageSize::Extractors::Extractor
     return APNG if APNG.matches? io, bytes
     return SWF if SWF.matches? io, bytes
 
-    # Read in an additionl type to determine the format.
+    # Read in an additionl bytes to determine the format.
     bytes = Bytes.new 4
     io.pos -= 3
     io.read_fully bytes
@@ -21,18 +21,25 @@ abstract struct Athena::ImageSize::Extractors::Extractor
     return CUR if CUR.matches? io, bytes
     return PSD if PSD.matches? io, bytes
 
-    # Read in an additionl type to determine the format.
+    # Read in an additionl bytes to determine the format.
     bytes = Bytes.new 8
     io.pos -= 4
     io.read_fully bytes
 
     return MNG if MNG.matches? io, bytes
 
-    # Read in an additionl type to determine the format.
+    # Read in an additionl bytes to determine the format.
+    bytes = Bytes.new 12
+    io.pos -= 8
+    io.read_fully bytes
+
+    return WebP if WebP.matches? io, bytes
+
+    # Read in an additionl bytes to determine the format.
     # These are text based formats so will need to instantiate a string for the logic to work.
     # Being sure to rewind the IO.
     bytes = Bytes.new 4096
-    io.pos -= 8
+    io.pos -= 12
     io.read_fully? bytes
 
     io.rewind
