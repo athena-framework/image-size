@@ -49,7 +49,7 @@ struct Athena::ImageSize::Extractors::JPEG < Athena::ImageSize::Extractors::Extr
       when Block::M_SOF0, Block::M_SOF1, Block::M_SOF2, Block::M_SOF3, Block::M_SOF5, Block::M_SOF6, Block::M_SOF7,
            Block::M_SOF9, Block::M_SOF10, Block::M_SOF11, Block::M_SOF13, Block::M_SOF14, Block::M_SOF15
         if image.nil?
-          length = io.read_bytes UInt16, IO::ByteFormat::BigEndian
+          io.read_bytes UInt16, IO::ByteFormat::BigEndian
 
           bits = io.read_byte.not_nil!
           height = io.read_bytes UInt16, IO::ByteFormat::BigEndian

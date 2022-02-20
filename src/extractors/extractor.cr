@@ -1,5 +1,6 @@
 # :nodoc:
 abstract struct Athena::ImageSize::Extractors::Extractor
+  # ameba:disable Metrics/CyclomaticComplexity
   def self.from_io(io : IO)
     bytes = Bytes.new 3
     io.read_fully bytes

@@ -21,6 +21,7 @@ abstract struct Athena::ImageSize::Extractors::AbstractTIFF < Athena::ImageSize:
     DOUBLE    = 12 # 8-byte double-precision IEEE floating-point value
   end
 
+  # ameba:disable Metrics/CyclomaticComplexity
   def self.extract(io : IO) : AIS::Image?
     offset = io.read_bytes UInt32, self.byte_format
 
