@@ -6,7 +6,7 @@ abstract struct Athena::ImageSize::Extractors::AbstractTIFF < Athena::ImageSize:
     SamplesPerPixel = 0x0115
   end
 
-  private enum DataType
+  private enum DataType : UInt16
     BYTE      =  1 # 8-bit unsigned integer
     STRING    =  2 # 8-bit, NULL-terminated string
     USHORT    =  3 # 16-bit unsigned integer
