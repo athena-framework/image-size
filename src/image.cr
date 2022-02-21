@@ -25,7 +25,7 @@ struct Athena::ImageSize::Image
   # Returns the format of this image.
   getter format : Athena::ImageSize::Image::Format
 
-  def initialize(width : Int, height : Int, @format : AIS::Image::Format, bits : Int? = nil, channels : Int? = nil)
+  protected def initialize(width : Int, height : Int, @format : AIS::Image::Format, bits : Int? = nil, channels : Int? = nil)
     @width = width.to_i
     @height = height.to_i
     @bits = bits.try &.to_i
